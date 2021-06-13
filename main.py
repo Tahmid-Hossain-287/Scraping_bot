@@ -12,9 +12,10 @@ class HackerNewsScraping:
     link_list = []
     final_list = []
 
-    def __init__(self, link):
+    def __init__(self, link, minimum_vote):
         self.unchanged_link = link
         self.link = link
+        self.minimum_vote = minimum_vote
         
     def unused_code(self):
         # self.news_heading = self.soup.find_all(class_=["score", "title", "storylink"])      
@@ -41,15 +42,17 @@ class HackerNewsScraping:
             if link["href"] not in self.link_list:
                 self.link_list.append(link["href"])        
 
-        THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
-        storage_file = os.path.join(THIS_FOLDER, 'news.txt')
+        # Using the os module to write and open storage file so that it works on machine with almost all operating system.
+        THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) # This code returns the absolute path of the current directory.
+        storage_file = os.path.join(THIS_FOLDER, 'news.txt') # This code joins the absolute path of the current directory with the name of the current file.
         news_file = open(storage_file, "a")
 
         for t, s, l in zip(self.title_list, self.score_list, self.link_list):
-            if int(s.split()[0]) > 50 and l not in self.final_list: # This condition checks if the score if more than 50 and if the link is not saved previously.
-                print(f"{t} \n Points: {s} \n Link: {l} ")
+            if int(s.split()[0]) > self.minimum_vote and l not in self.final_list: # This condition checks if the score if more than 50 and if the link is not saved previously.
+                # print(f"{t} \n Points: {s} \n Link: {l} ")
                 self.final_list.append(l)
                 news_file.write(f"{t} \n Points: {s} \n Link: {l} \n")
+                
         news_file.close()
 
     def scrape_upto_the_given_page(self, page_num=0):
@@ -97,6 +100,6 @@ class HackerNewsScraping:
             print("No news remaining.")
 
         
-Bot_1 = HackerNewsScraping("https://news.ycombinator.com/news")
+Bot_1 = HackerNewsScraping("https://news.ycombinator.com/news", 50)
 
 Bot_1.scrape_upto_the_given_page()
