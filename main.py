@@ -76,7 +76,7 @@ class HackerNewsScraping:
             try:
                 self.scrape()
                 time.sleep(1.5)
-            except():
+            except:
                 print("No news remaining.")
     
     def scrape_given_page(self):
@@ -96,7 +96,7 @@ class HackerNewsScraping:
 
         try:
             self.scrape()
-        except():
+        except:
             print("No news remaining.")
 
         
