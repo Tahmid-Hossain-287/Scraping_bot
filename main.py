@@ -23,7 +23,7 @@ class HackerNewsScraping:
 
     def scrape(self):
 
-        self.web_page = (requests.request('GET', str(self.link)))
+        self.web_page = (requests.request(method='GET', url=str(self.link)))
         self.soup = BeautifulSoup(self.web_page.text, 'lxml')
 
         self.score = self.soup.find_all(class_="score")
@@ -101,6 +101,6 @@ class HackerNewsScraping:
             print("No news remaining.")
 
         
-Bot_1 = HackerNewsScraping("https://news.ycombinator.com/news", 50)
+Bot_1 = HackerNewsScraping("https://news.ycombinator.com/news", minimum_vote=50)
 
 Bot_1.scrape_upto_the_given_page()
